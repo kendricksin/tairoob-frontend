@@ -33,25 +33,34 @@ const PrintPhoto: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title="Print Your Photo" />
-      <Form form={form} layout="vertical" onFinish={onFinish}>
-        <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="photo" label="Photo" rules={[{ required: true, message: 'Please upload a photo!' }]}>
-          <Upload {...props} listType="picture">
-            <Button icon={<UploadOutlined />}>Select Photo</Button>
-          </Upload>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <PageHeader title="Print Your Photo" />
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          style={{ maxWidth: 600, width: '100%', margin: '0 auto', flex: 1, display: 'flex', flexDirection: 'column' }}
+        >
+          <div style={{ flex: 1 }}>
+            <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="photo" label="Photo" rules={[{ required: true, message: 'Please upload a photo!' }]}>
+              <Upload {...props} listType="picture">
+                <Button icon={<UploadOutlined />}>Select Photo</Button>
+              </Upload>
+            </Form.Item>
+          </div>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </Layout>
   );
 };

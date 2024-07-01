@@ -1,21 +1,31 @@
 import React from 'react';
 import { Layout as AntLayout, Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import type { MenuProps } from 'antd';
 
 const { Header, Content, Footer } = AntLayout;
 
+const items: MenuProps['items'] = [
+  { key: '/', label: <Link to="/">Home</Link> },
+  { key: '/print', label: <Link to="/print">Print Photo</Link> },
+];
+
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const location = useLocation();
+
   return (
-    <AntLayout className="layout" style={{ minHeight: '100vh' }}>
-      <Header>
+    <AntLayout style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header style={{ position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-          <Menu.Item key="2"><Link to="/print">Print Photo</Link></Menu.Item>
-        </Menu>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectedKeys={[location.pathname]}
+          items={items}
+        />
       </Header>
-      <Content style={{ padding: '0 50px', marginTop: 64 }}>
-        <div className="site-layout-content" style={{ background: '#fff', padding: 24, minHeight: 380 }}>
+      <Content style={{ padding: '0 50px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: '#fff', padding: 24, flex: 1, display: 'flex', flexDirection: 'column' }}>
           {children}
         </div>
       </Content>

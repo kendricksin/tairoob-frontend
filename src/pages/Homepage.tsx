@@ -33,34 +33,40 @@ const Homepage: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title="Welcome to Our Photo Print Service" />
-      
-      <Title level={2}>How to Use Our Service</Title>
-      <List
-        itemLayout="horizontal"
-        dataSource={steps}
-        renderItem={(item, index) => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<div style={{ fontSize: '24px', color: '#1890ff' }}>{item.icon}</div>}
-              title={<Typography.Text strong>{`Step ${index + 1}: ${item.title}`}</Typography.Text>}
-              description={item.description}
-            />
-          </List.Item>
-        )}
-      />
-      
-      <Title level={2} style={{ marginTop: '24px' }}>Our Commitment</Title>
-      <Paragraph>
-        We strive to deliver high-quality prints of your cherished memories. Our team carefully processes each order to ensure the best results.
-      </Paragraph>
-      
-      <Title level={2}>Ready to Start?</Title>
-      <Space>
-        <Button type="primary" icon={<CameraOutlined />} size="large">
-          <Link to="/print">Print Your Photo Now</Link>
-        </Button>
-      </Space>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <PageHeader title="Welcome to Our Photo Print Service" />
+        
+        <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 24 }}>
+          <Title level={2}>How to Use Our Service</Title>
+          <List
+            itemLayout="horizontal"
+            dataSource={steps}
+            renderItem={(item, index) => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<div style={{ fontSize: '24px', color: '#1890ff' }}>{item.icon}</div>}
+                  title={<Typography.Text strong>{`Step ${index + 1}: ${item.title}`}</Typography.Text>}
+                  description={item.description}
+                />
+              </List.Item>
+            )}
+          />
+          
+          <Title level={2} style={{ marginTop: '24px' }}>Our Commitment</Title>
+          <Paragraph>
+            We strive to deliver high-quality prints of your cherished memories. Our team carefully processes each order to ensure the best results.
+          </Paragraph>
+        </div>
+        
+        <div style={{ marginTop: 'auto' }}>
+          <Title level={2}>Ready to Start?</Title>
+          <Space>
+            <Button type="primary" icon={<CameraOutlined />} size="large">
+              <Link to="/print">Print Your Photo Now</Link>
+            </Button>
+          </Space>
+        </div>
+      </div>
     </Layout>
   );
 };
