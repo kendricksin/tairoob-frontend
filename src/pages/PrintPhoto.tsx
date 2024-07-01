@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Input, Upload, Button, message, Select, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,6 @@ const { Option } = Select;
 const PrintPhoto: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [fileList, setFileList] = useState<any[]>([]);
 
   const onFinish = async (values: any) => {
     try {
@@ -20,8 +19,8 @@ const PrintPhoto: React.FC = () => {
       formData.append('email', values.Email);
       formData.append('address', JSON.stringify(values.address));
       
-      if (fileList[0] && fileList[0].originFileObj) {
-        formData.append('photo', fileList[0].originFileObj, fileList[0].originFileObj.name);
+      if (values.photo && values.photo[0] && values.photo[0].originFileObj) {
+        formData.append('photo', values.photo[0].originFileObj);
       }
 
       console.log('FormData entries:');
@@ -42,15 +41,11 @@ const PrintPhoto: React.FC = () => {
     }
   };
 
-  const props = {
-    onRemove: (file: any) => {
-      setFileList([]);
-    },
-    beforeUpload: (file: any) => {
-      setFileList([file]);
-      return false;
-    },
-    fileList,
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
   };
 
   return (
@@ -91,8 +86,14 @@ const PrintPhoto: React.FC = () => {
                 </Form.Item>
               </Space.Compact>
             </Form.Item>
-            <Form.Item name="photo" label="Photo" rules={[{ required: true, message: 'Please upload a photo!' }]}>
-              <Upload {...props} listType="picture">
+            <Form.Item
+              name="photo"
+              label="Photo"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+              rules={[{ required: true, message: 'Please upload a photo!' }]}
+            >
+              <Upload name="photo" listType="picture" beforeUpload={() => false}>
                 <Button icon={<UploadOutlined />}>Select Photo</Button>
               </Upload>
             </Form.Item>
