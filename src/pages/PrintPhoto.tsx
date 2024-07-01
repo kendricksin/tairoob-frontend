@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import PageHeader from '../components/PageHeader';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -12,22 +13,41 @@ const PrintPhoto: React.FC = () => {
   const navigate = useNavigate();
   const [fileList, setFileList] = useState<any[]>([]);
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    // TODO: Implement form submission logic
-    message.success('Order submitted successfully!');
-    navigate('/payment');
+  const onFinish = async (values: any) => {
+    try {
+      const formData = new FormData();
+      formData.append('name', values.Name);
+      formData.append('email', values.Email);
+      formData.append('address', JSON.stringify(values.address));
+      
+      if (fileList[0] && fileList[0].originFileObj) {
+        formData.append('photo', fileList[0].originFileObj, fileList[0].originFileObj.name);
+      }
+
+      console.log('FormData entries:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await axios.post('http://localhost:5000/api/orders', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      console.log('Success:', response.data);
+      message.success('Order submitted successfully!');
+      navigate('/payment');
+    } catch (error) {
+      console.error('Error:', error);
+      message.error('Failed to submit order. Please try again.');
+    }
   };
 
   const props = {
     onRemove: (file: any) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
+      setFileList([]);
     },
     beforeUpload: (file: any) => {
-      setFileList([...fileList, file]);
+      setFileList([file]);
       return false;
     },
     fileList,
