@@ -8,6 +8,7 @@ const { Header, Content, Footer } = AntLayout;
 const items: MenuProps['items'] = [
   { key: '/', label: <Link to="/">Home</Link> },
   { key: '/print', label: <Link to="/print">Print Photo</Link> },
+  { key: '/status', label: <Link to="/status">Status</Link> },
 ];
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
@@ -15,7 +16,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
   return (
     <AntLayout style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header style={{ position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
+      <Header style={{ position: 'fixed', zIndex: 1, width: '100%', top: 0 }}>
         <div className="logo" />
         <Menu
           theme="dark"
@@ -24,12 +25,22 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           items={items}
         />
       </Header>
-      <Content style={{ padding: '0 50px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ background: '#fff', padding: 24, flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <Content style={{ marginTop: 64, marginBottom: 70, flex: 1, overflow: 'auto' }}>
+        <div style={{ padding: '24px 50px', minHeight: '100%' }}>
           {children}
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Photo Print Service ©2024 Created by YourCompany</Footer>
+      <Footer style={{ 
+        textAlign: 'center', 
+        background: '#f0f2f5', 
+        padding: '12px 50px',
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        zIndex: 1
+      }}>
+        Photo Print Service ©2024 Created by YourCompany
+      </Footer>
     </AntLayout>
   );
 };

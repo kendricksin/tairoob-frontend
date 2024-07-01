@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Form, Input, Upload, Button, message } from 'antd';
+import { Form, Input, Upload, Button, message, Select, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import PageHeader from '../components/PageHeader';
+
+const { Option } = Select;
 
 const PrintPhoto: React.FC = () => {
   const [form] = Form.useForm();
@@ -42,11 +44,32 @@ const PrintPhoto: React.FC = () => {
           style={{ maxWidth: 600, width: '100%', margin: '0 auto', flex: 1, display: 'flex', flexDirection: 'column' }}
         >
           <div style={{ flex: 1 }}>
-            <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
+            <Form.Item name="Name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
               <Input />
             </Form.Item>
-            <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}>
+            <Form.Item name="Email" label="Email" rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}>
               <Input />
+            </Form.Item>
+            <Form.Item label="Address">
+              <Space.Compact>
+                <Form.Item
+                  name={['address', 'province']}
+                  noStyle
+                  rules={[{ required: true, message: 'Province is required' }]}
+                >
+                  <Select placeholder="Select Area in Bangkok">
+                    <Option value="Sathorn">Sathorn</Option>
+                    <Option value="Nonthaburi">Nonthaburi</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  name={['address', 'street']}
+                  noStyle
+                  rules={[{ required: true, message: 'Street is required' }]}
+                >
+                  <Input style={{ width: '100%' }} placeholder="Input street" />
+                </Form.Item>
+              </Space.Compact>
             </Form.Item>
             <Form.Item name="photo" label="Photo" rules={[{ required: true, message: 'Please upload a photo!' }]}>
               <Upload {...props} listType="picture">
