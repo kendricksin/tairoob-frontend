@@ -8,6 +8,7 @@ const { Header, Content, Footer } = AntLayout;
 const items: MenuProps['items'] = [
   { key: '/', label: <Link to="/">Home</Link> },
   { key: '/print', label: <Link to="/print">Print Photo</Link> },
+  { key: '/payment', label: <Link to="/payment">Payment</Link> },
   { key: '/status', label: <Link to="/status">Status</Link> },
 ];
 
