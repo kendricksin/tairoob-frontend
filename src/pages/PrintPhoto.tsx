@@ -1,16 +1,48 @@
-import React from 'react';
-import { Form, Input, Upload, Button, message, Select, Space } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Upload, Button, message, Select, Row, Col, Card, Grid } from 'antd';
+import type { Gutter } from 'antd/es/grid';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import PageHeader from '../components/PageHeader';
 import axios from 'axios';
 
+// Import the template images
+import template1 from '../assets/template1.jpg';
+import template2 from '../assets/template2.jpg';
+import template3 from '../assets/template3.jpg';
+import template4 from '../assets/template4.jpg';
+
 const { Option } = Select;
+
+// Customizable variables
+const FORM_MAX_WIDTH = 800;
+const GRID_GUTTER: [Gutter, Gutter] = [16, 16];
+const CARD_HEIGHT = 400;
+const CARD_IMAGE_HEIGHT = 300;
+const CARD_SELECT_BUTTON_WIDTH = '80%';
+const GRID_COLUMN_SIZES = {
+  xs: 24,
+  sm: 12,
+  md: 6,
+  lg: 6,
+  xl: 6
+};
+
+const SUBMIT_BUTTON_HEIGHT = 50;
+const SUBMIT_BUTTON_FONT_SIZE = 18;
 
 const PrintPhoto: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+
+  const templates = [
+    { name: 'Student F', src: template1 },
+    { name: 'Student M', src: template2 },
+    { name: 'Formal F', src: template3 },
+    { name: 'Formal M', src: template4 },
+  ];
 
   const onFinish = async (values: any) => {
     try {
@@ -18,14 +50,10 @@ const PrintPhoto: React.FC = () => {
       formData.append('name', values.Name);
       formData.append('email', values.Email);
       formData.append('address', JSON.stringify(values.address));
+      formData.append('template', selectedTemplate || '');
       
       if (values.photo && values.photo[0] && values.photo[0].originFileObj) {
         formData.append('photo', values.photo[0].originFileObj);
-      }
-
-      console.log('FormData entries:');
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
       }
 
       const response = await axios.post('http://localhost:5000/api/orders', formData, {
@@ -56,7 +84,7 @@ const PrintPhoto: React.FC = () => {
           form={form}
           layout="vertical"
           onFinish={onFinish}
-          style={{ maxWidth: 600, width: '100%', margin: '0 auto', flex: 1, display: 'flex', flexDirection: 'column' }}
+          style={{ maxWidth: FORM_MAX_WIDTH, width: '100%', margin: '0 auto', flex: 1, display: 'flex', flexDirection: 'column' }}
         >
           <div style={{ flex: 1 }}>
             <Form.Item name="Name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
@@ -66,13 +94,13 @@ const PrintPhoto: React.FC = () => {
               <Input />
             </Form.Item>
             <Form.Item label="Address">
-              <Space.Compact>
+              <Input.Group compact>
                 <Form.Item
                   name={['address', 'province']}
                   noStyle
                   rules={[{ required: true, message: 'Province is required' }]}
                 >
-                  <Select placeholder="Select Area in Bangkok">
+                  <Select style={{ width: '50%' }} placeholder="Select Area in Bangkok">
                     <Option value="Sathorn">Sathorn</Option>
                     <Option value="Nonthaburi">Nonthaburi</Option>
                   </Select>
@@ -82,9 +110,9 @@ const PrintPhoto: React.FC = () => {
                   noStyle
                   rules={[{ required: true, message: 'Street is required' }]}
                 >
-                  <Input style={{ width: '100%' }} placeholder="Input street" />
+                  <Input style={{ width: '50%' }} placeholder="Input street" />
                 </Form.Item>
-              </Space.Compact>
+              </Input.Group>
             </Form.Item>
             <Form.Item
               name="photo"
@@ -97,10 +125,45 @@ const PrintPhoto: React.FC = () => {
                 <Button icon={<UploadOutlined />}>Select Photo</Button>
               </Upload>
             </Form.Item>
+            <Form.Item name="template" label="Select Template" rules={[{ required: true, message: 'Please select a template!' }]}>
+              <Row gutter={GRID_GUTTER}>
+                {templates.map((template, index) => (
+                  <Col {...GRID_COLUMN_SIZES} key={index}>
+                    <Card
+                      hoverable
+                      style={{ width: '100%', height: `${CARD_HEIGHT}px`, textAlign: 'center' }}
+                      cover={<img alt={template.name} src={template.src} style={{ height: CARD_IMAGE_HEIGHT, objectFit: 'cover' }} />}
+                      onClick={() => {
+                        setSelectedTemplate(template.src);
+                        form.setFieldsValue({ template: template.src });
+                      }}
+                    >
+                      <Card.Meta title={template.name} />
+                      <Button
+                        type={selectedTemplate === template.src ? 'primary' : 'default'}
+                        style={{ marginTop: 16, width: CARD_SELECT_BUTTON_WIDTH }}
+                      >
+                        Select
+                      </Button>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Form.Item>
           </div>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              danger  // This makes the button red
+              style={{ 
+                width: '100%',
+                height: `${SUBMIT_BUTTON_HEIGHT}px`,
+                fontSize: `${SUBMIT_BUTTON_FONT_SIZE}px`,
+                fontWeight: 'bold'
+              }}
+            >
+              Submit Order
             </Button>
           </Form.Item>
         </Form>
