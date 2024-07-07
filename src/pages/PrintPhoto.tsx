@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Upload, Button, message, Select, Row, Col, Card, Grid } from 'antd';
-import type { Gutter } from 'antd/es/grid';
+import { Form, Input, Upload, Button, message, Select, Row, Col, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -12,6 +11,7 @@ import template1 from '../assets/template1.jpg';
 import template2 from '../assets/template2.jpg';
 import template3 from '../assets/template3.jpg';
 import template4 from '../assets/template4.jpg';
+import { Gutter } from 'antd/es/grid/row';
 
 const { Option } = Select;
 
@@ -36,6 +36,7 @@ const PrintPhoto: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const templates = [
     { name: 'Student F', src: template1 },
@@ -52,8 +53,8 @@ const PrintPhoto: React.FC = () => {
       formData.append('address', JSON.stringify(values.address));
       formData.append('template', selectedTemplate || '');
       
-      if (values.photo && values.photo[0] && values.photo[0].originFileObj) {
-        formData.append('photo', values.photo[0].originFileObj);
+      if (uploadedFile) {
+        formData.append('photo', uploadedFile);
       }
 
       const response = await axios.post('http://localhost:5000/api/orders', formData, {
@@ -62,7 +63,13 @@ const PrintPhoto: React.FC = () => {
 
       console.log('Success:', response.data);
       message.success('Order submitted successfully!');
-      navigate('/payment');
+      navigate('/poc', { 
+        state: { 
+          orderId: response.data.orderId,
+          selectedTemplate: selectedTemplate,
+          uploadedFile: uploadedFile
+        } 
+      });
     } catch (error) {
       console.error('Error:', error);
       message.error('Failed to submit order. Please try again.');
@@ -72,6 +79,9 @@ const PrintPhoto: React.FC = () => {
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
+    }
+    if (e.fileList.length > 0) {
+      setUploadedFile(e.fileList[0].originFileObj);
     }
     return e && e.fileList;
   };
