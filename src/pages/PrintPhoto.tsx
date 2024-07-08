@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import PageHeader from '../components/PageHeader';
 import axios from 'axios';
+import { DB_SERVER } from './config'
 
 // Import the template images
 import template1 from '../assets/template1.jpg';
@@ -57,7 +58,7 @@ const PrintPhoto: React.FC = () => {
         formData.append('photo', uploadedFile);
       }
 
-      const response = await axios.post('http://localhost:5000/api/orders', formData, {
+      const response = await axios.post(`http://${DB_SERVER}:5000/api/orders`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 

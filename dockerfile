@@ -10,17 +10,21 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Install http-server
+RUN npm install -g http-server
+
 # Copy the rest of the application code
 COPY . .
 
 # Build the app for production
 RUN npm run build
 
-# # Install serve to run the application
-# RUN npm install -g serve
+# Create env variable
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
 # Expose the port the app runs on
-EXPOSE 5000
+EXPOSE 3000
 
 # # Define the command to run the app
-CMD ["npm", "run", "build"]
+CMD npm run build && http-server dist -p 3000

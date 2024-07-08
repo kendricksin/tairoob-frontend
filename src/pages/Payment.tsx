@@ -15,7 +15,7 @@ const CheckoutForm = ({ amount }: { amount: number }) => {
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    axios.post('http://localhost:5000/create-payment-intent', { amount })
+    axios.post('http://127.0.0.1:5000/create-payment-intent', { amount })
       .then(res => setClientSecret(res.data.clientSecret))
       // .catch(err => message.error('Failed to initiate payment'));
   }, [amount]);
