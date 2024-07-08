@@ -1,5 +1,5 @@
 interface ImportMetaEnv {
-    readonly DB_SERVER: string
+    readonly VITE_DB_SERVER: string
     readonly VITE_API_URL: string
   }
   
