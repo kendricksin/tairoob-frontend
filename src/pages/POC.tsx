@@ -48,7 +48,7 @@ const POC: React.FC = () => {
       const templateBlob = await templateResponse.blob();
       const templateFile = new File([templateBlob], selectedTemplate.split('/').pop() || 'template.jpg', { type: templateBlob.type });
       formData.append('dest_image', templateFile, templateFile.name);
-
+      console.log('Order ID', orderId)
       console.log('Sending request with:', {
         source_image: uploadedImage.name,
         dest_image: templateFile.name
