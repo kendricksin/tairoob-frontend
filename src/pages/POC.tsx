@@ -55,7 +55,7 @@ const POC: React.FC = () => {
         dest_image: templateFile.name
       });
 
-      const response = await axios.post(`http://${API_URL}:8080/swapper`, formData, {
+      const response = await axios.post(`${API_URL}/swapper`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         responseType: 'arraybuffer'  // Expect binary data in response
       });

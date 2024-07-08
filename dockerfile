@@ -23,6 +23,9 @@ RUN npm run build
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
+ARG DB_SERVER
+ENV DB_SERVER=$DB_SERVER
+
 # Expose the port the app runs on
 EXPOSE 3000
 

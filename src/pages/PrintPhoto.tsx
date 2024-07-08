@@ -58,7 +58,7 @@ const PrintPhoto: React.FC = () => {
         formData.append('photo', uploadedFile);
       }
 
-      const response = await axios.post(`http://${DB_SERVER}:5000/api/orders`, formData, {
+      const response = await axios.post(`${DB_SERVER}/api/orders`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
