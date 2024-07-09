@@ -4,7 +4,7 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import PageHeader from '../components/PageHeader';
 import { useLocation } from 'react-router-dom';
-import { API_URL } from './config'
+// import { API_URL } from './config'
 
 const { Meta } = Card;
 
@@ -55,7 +55,12 @@ const POC: React.FC = () => {
         dest_image: templateFile.name
       });
 
-      const response = await axios.post(`${API_URL}/swapper`, formData, {
+      // const response = await axios.post(`${API_URL}/swapper`, formData, {
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      //   responseType: 'arraybuffer'  // Expect binary data in response
+      // });
+
+      const response = await axios.post('http://8.213.193.124:5000/swapper', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         responseType: 'arraybuffer'  // Expect binary data in response
       });

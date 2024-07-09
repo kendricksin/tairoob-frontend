@@ -4,7 +4,7 @@ export const API_URL = (() => {
     return apiUrl.startsWith('http') ? apiUrl : `http://${apiUrl}`;
   })();
 export const DB_SERVER = (() => {
-  const dbUrl = import.meta.env.DB_SERVER;
+  const dbUrl = import.meta.env.VITE_DB_SERVER;
   if (!dbUrl) return 'http://8.213.210.6:5000';
   return dbUrl.startsWith('http') ? dbUrl : `http://${dbUrl}`;
 })();
