@@ -62,7 +62,7 @@ const PrintPhoto: React.FC = () => {
       //   headers: { 'Content-Type': 'multipart/form-data' }
       // });
 
-      const response = await axios.post('http://8.213.210.6:5000/api/orders', formData, {
+      const response = await axios.post('http://localhost:5000/api/orders', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 

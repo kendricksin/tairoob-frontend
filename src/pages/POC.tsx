@@ -60,7 +60,7 @@ const POC: React.FC = () => {
       //   responseType: 'arraybuffer'  // Expect binary data in response
       // });
 
-      const response = await axios.post('http://8.213.193.124:5000/swapper', formData, {
+      const response = await axios.post('http://localhost:8000/swapper', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         responseType: 'arraybuffer'  // Expect binary data in response
       });
